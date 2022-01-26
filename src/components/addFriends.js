@@ -1,56 +1,59 @@
-import React, from "react";i8
+import React, { useState } from "react";
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 
+ const AddFriends = () => {
 
- class AddFriends extends React.Component {
+    const { push } = useHistory();
 
-    state = {
-        newFriend:{
-            name: 'name',
-            email: 'email@email.com'
-        } 
-      };
+    const [form, setForm] = useState({
+        name: 'name',
+        email: 'email@email.com'
+    });
     
-    handleChange = e => {
-        this.setState({
-            newFriend:{   
-                ...this.state.newFriend,
-                [e.target.name]: e.target.value
-            } 
-        });
-    };
+   const handleChange = e => {
+      setForm({
+          ...form,
+          [e.target.name]: e.target.value
+      });
+    }
 
-    submit = e => {
+    const submit = e => {
         e.preventDefault();
-        axios.post('http://localhost:9000/api/friends', this.state.newFriend)
+        const token = localStorage.getItem('token');
+        axios.post('http://localhost:9000/api/friends', form, 
+            {
+                headers: {
+                    authorization: token
+                }
+            })
           .then(resp=> {
-            localStorage.setItem("token", resp.data.token);
-            this.props.history.push('/friends');
+            push('/friends');
           })
           .catch(err=> {
             console.log(err);
           });
       };
       
-      render(){
+    
         return (
             <div>
                 <h2>Add Friend</h2>
                 <div>
-                    <form onSubmit={this.submit}>
+                    <form onSubmit={submit}>
                     <input
                         type="text"
                         name="name"
-                        value={this.state.newFriend.name}
-                        onChange={this.handleChange}
+                        value={form.name}
+                        onChange={handleChange}
                         placeholder='name'
                     />
                     <input
                         type="email"
                         name="email"
-                        value={this.state.newFriend.email}
-                        onChange={this.handleChange}
+                        value={form.email}
+                        onChange={handleChange}
                         placeholder='email'
                     />
                     <button>Submit</button>
@@ -58,7 +61,7 @@ import axios from 'axios';
                 </div>
             </div>
         )
-      }
+      
     };
 
 
