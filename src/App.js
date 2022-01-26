@@ -10,6 +10,7 @@ import AddFriends from './components/addFriends';
 
 
 function App() {
+
   const isLoggedIn = localStorage.getItem("token");
 
   return (
@@ -23,17 +24,16 @@ function App() {
               <Link className='navLink' to="/friendslist">FriendsList</Link>
               <Link className='navLink' to="/addfriends">AddFriends</Link>
               </nav>
-              {
-                isLoggedIn && <p>Welcome {localStorage.getItem("username")}</p>
-              }
+              {isLoggedIn && <Link to="/friendslist">Protected Page</Link>}
           </div>
             <Switch> 
+              {/* <PrivateRoute exact path="/protected" component={GasPrices} /> */}
               <Route path="/logout" component={Logout} />
               <Route path="/friendslist" component={FriendsList}/>
               <Route path="/addfriends" component={AddFriends}/>
               <Route path="/login" component={Login} />
               <Route path="/" component={Login} />
-          </Switch>
+            </Switch>
         </div>
     </Router>
   
