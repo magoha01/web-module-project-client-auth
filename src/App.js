@@ -7,6 +7,7 @@ import Login from './components/login';
 import Logout from './components/logout';
 import FriendsList from './components/friendsList';
 import AddFriends from './components/addFriends';
+import PrivateRoute from './components/PrivateRoute';
 
 
 function App() {
@@ -21,16 +22,20 @@ function App() {
               <nav>
               <Link className='navLink' to="/login">Login</Link>
               <Link className='navLink' to="/logout">Logout</Link>
-              <Link className='navLink' to="/friendslist">FriendsList</Link>
-              <Link className='navLink' to="/addfriends">AddFriends</Link>
+              {/* <Link className='navLink' to="/friends">Friends List</Link> */}
+              {isLoggedIn && <Link to="/friends/add">Add Friends</Link>}
+              {isLoggedIn && <Link to="/friends">Friends List</Link>}
+              
               </nav>
-              {isLoggedIn && <Link to="/friendslist">Protected Page</Link>}
+              
           </div>
             <Switch> 
-              {/* <PrivateRoute exact path="/protected" component={GasPrices} /> */}
+              <PrivateRoute exact path="/friends/add" component={AddFriends} />
+              <PrivateRoute exact path="/friends" component={FriendsList} />
+              
               <Route path="/logout" component={Logout} />
-              <Route path="/friendslist" component={FriendsList}/>
-              <Route path="/addfriends" component={AddFriends}/>
+              {/* <Route path="/friends" component={FriendsList}/> */}
+              {/* <Route path="/addfriends" component={AddFriends}/> */}
               <Route path="/login" component={Login} />
               <Route path="/" component={Login} />
             </Switch>
